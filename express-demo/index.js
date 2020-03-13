@@ -1,22 +1,31 @@
+const morgan = require('morgan');
+const helmet = require('helmet');
 const Joi = require('joi'); //return a class
+const logger = require('./logger');
+const auth = require('./auth');
 const express = require('express');
 const app = express();
 
-app.use(express.json()); //add a piece of middlewear
+//console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+//console.log(`app: ${app.get('env')}`);
 
+app.use(express.json()); //add a piece of middleware
+app.use(express.urlencoded({ extended: true })); //key=value&key=value > req.body
+app.use(express.static('public')); //to serve static files
+app.use(helmet);
+
+if(app.get('env') === 'development') {
+	app.use(morgan('tiny'));
+}
+
+//custom middlewere functions
+app.use(logger); 
+app.use(auth);
+	
 const courses = [
-	{
-		id: 1,
-		name: 'course 1'
-	},
-	{
-		id: 2,
-		name: 'course 2'
-	},
-	{
-		id: 3,
-		name: 'course 3'
-	},
+	{ id: 1, name: 'course 1' },
+	{ id: 2, name: 'course 2' },
+	{ id: 3, name: 'course 3' },
 ];
 
 app.get('/api/courses', (req, res) => {

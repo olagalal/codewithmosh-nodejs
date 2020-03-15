@@ -1,5 +1,5 @@
-const startupDebugger = require('debug')('app:startup');
-const dbDebugger = require('debug')('app:db');
+//const startupDebugger = require('debug')('app:startup');
+//const dbDebugger = require('debug')('app:db');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const Joi = require('joi'); //return a class
@@ -7,6 +7,10 @@ const logger = require('./logger');
 const auth = require('./auth');
 const express = require('express');
 const app = express();
+
+app.set('view engine', 'pug'); //express will load pug module
+app.set('views', './views'); //default
+
 
 //Configuration 
 /*const config = require('config');
@@ -21,11 +25,11 @@ console.log("Mail Password: " + config.get('mail.password'));
 app.use(express.json()); //add a piece of middleware
 app.use(express.urlencoded({ extended: true })); //key=value&key=value > req.body
 app.use(express.static('public')); //to serve static files
-app.use(helmet);
+app.use(helmet());
 
 if(app.get('env') === 'development') {
 	app.use(morgan('tiny'));
-	startupDebugger('Morgan enable ..')
+	//startupDebugger('Morgan enable ..')
 }
 
 //custom middlewere functions
@@ -33,13 +37,18 @@ app.use(logger);
 app.use(auth);
 	
 //DB work ..
-dbDebugger('Connected to database...');
+//dbDebugger('Connected to database...');
 
 const courses = [
 	{ id: 1, name: 'course 1' },
 	{ id: 2, name: 'course 2' },
 	{ id: 3, name: 'course 3' },
 ];
+
+app.get('/' , (req, res) => {
+	res.render('index', {title: 'My express app', message: 'Hello'});	
+});
+
 
 app.get('/api/courses', (req, res) => {
 	res.send(courses);

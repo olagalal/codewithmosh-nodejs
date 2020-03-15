@@ -1,3 +1,5 @@
+const startupDebugger = require('debug')('app:startup');
+const dbDebugger = require('debug')('app:db');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const Joi = require('joi'); //return a class
@@ -7,10 +9,11 @@ const express = require('express');
 const app = express();
 
 //Configuration 
-const config = require('config');
+/*const config = require('config');
 console.log("Application Name: " + config.get('name'));
 console.log("Mail Host: " + config.get('mail.host'));
 console.log("Mail Password: " + config.get('mail.password'));
+*/
 
 //console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 //console.log(`app: ${app.get('env')}`);
@@ -22,12 +25,16 @@ app.use(helmet);
 
 if(app.get('env') === 'development') {
 	app.use(morgan('tiny'));
+	startupDebugger('Morgan enable ..')
 }
 
 //custom middlewere functions
 app.use(logger); 
 app.use(auth);
 	
+//DB work ..
+dbDebugger('Connected to database...');
+
 const courses = [
 	{ id: 1, name: 'course 1' },
 	{ id: 2, name: 'course 2' },

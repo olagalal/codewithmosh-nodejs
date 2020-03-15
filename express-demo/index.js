@@ -6,6 +6,12 @@ const auth = require('./auth');
 const express = require('express');
 const app = express();
 
+//Configuration 
+const config = require('config');
+console.log("Application Name: " + config.get('name'));
+console.log("Mail Host: " + config.get('mail.host'));
+console.log("Mail Password: " + config.get('mail.password'));
+
 //console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 //console.log(`app: ${app.get('env')}`);
 

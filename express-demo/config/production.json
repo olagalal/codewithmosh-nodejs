@@ -1,0 +1,6 @@
+{
+	"name" : "pro-name",
+	"mail" : {
+		"host" : "pro-mail-server"
+	}
+}

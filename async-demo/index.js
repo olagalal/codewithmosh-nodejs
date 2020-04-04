@@ -1,4 +1,4 @@
-/* Callbacks
+/* //Callbacks
 console.log('Before');
 getUser(1, (user) => {
 	getRepositories(user.gitHubUsername, (repos) => {
@@ -10,12 +10,23 @@ getUser(1, (user) => {
 console.log('After');
 */
 
+/* //Promises
 console.log('Back');
 getUser(1)
 	.then( user => getRepositories(user.gitHubUsername))
 	.then(repos => getCommits(repos[0]))
 	.then(commits => console.log('Commits', commits));
 console.log('After');
+*/
+
+//Async and Wait
+async function displayCommits(){
+	const user = await getUser(1);
+	const repos = await getRepositories(user.gitHubUsername);
+	const commits = await getCommits(repos[0]);
+	console.log(commits);
+}
+displayCommits();
 
 function getUser(id) {
 	return new Promise((resolve, reject) => {
